@@ -133,6 +133,27 @@ docker run --rm -it -p 5555:5555 \
 
 Ensure the mounted directory contains `ca.crt`, `server.crt`, and `server.key` files.
 
+## Testing
+
+Automated integration coverage is provided through `scripts/test.sh`. The helper script
+builds the project, runs the end-to-end demo, and verifies the expected handshake and
+payload exchange appear in the logs.
+
+```bash
+cd cpp-tls-demo
+./scripts/test.sh
+```
+
+The script exits with a non-zero status if the TLS session fails or the expected messages
+are missing, making it suitable for local smoke checks or continuous integration jobs.
+
+When working in Docker, invoke the same script by overriding the default container
+command:
+
+```bash
+docker run --rm -it cpp-tls-demo ./scripts/test.sh
+```
+
 ## Deployment Considerations
 
 - The server is synchronous and handles one client at a time; replicate containers or

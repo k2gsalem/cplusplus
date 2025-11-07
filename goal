@@ -1,0 +1,144 @@
+I want to build a sample C++ project that demonstrates secure TLS client-server communication using OpenSSL, similar to what a system-level developer at FoundingMinds might work on.
+
+Here is my full project plan:
+
+🎯 Goal
+
+Build a C++ project that demonstrates secure client-server communication using TLS (OpenSSL) — similar to the type of system-level work done at FoundingMinds.
+
+🧩 Phase 1 — Environment Setup
+
+Goal: Prepare C++ build and dependency environment.
+Tasks:
+
+Install g++, cmake, make, libssl-dev.
+
+Create folder structure:
+
+cpp-tls-demo/
+├── CMakeLists.txt
+├── src/
+├── include/
+└── certs/
+
+
+Initialize Git repository and .gitignore.
+
+⚙️ Phase 2 — Generate Self-Signed Certificates
+
+Goal: Create development certificates for encryption.
+Tasks:
+
+Use OpenSSL commands:
+
+openssl genrsa -out certs/server.key 2048
+openssl req -new -x509 -key certs/server.key -out certs/server.crt -days 365
+openssl req -new -x509 -key certs/server.key -out certs/ca.crt -days 365
+
+
+Store them inside the certs folder.
+
+💻 Phase 3 — Implement TLS Server
+
+Goal: Create a secure TCP server that:
+
+Loads server certificate and key
+
+Accepts TLS client connections
+
+Reads a message securely
+
+Sends a response securely
+
+Files:
+src/tls_server.cpp, include/tls_server.h
+
+Key tasks:
+
+Initialize OpenSSL
+
+Create socket and bind to port 5555
+
+Accept incoming client
+
+Wrap socket with SSL_new and SSL_accept
+
+Exchange messages securely
+
+💻 Phase 4 — Implement TLS Client
+
+Goal: Create a secure client that:
+
+Connects to server via TLS
+
+Sends encrypted message
+
+Receives and decrypts response
+
+Files:
+src/tls_client.cpp, include/tls_client.h
+
+Key tasks:
+
+Initialize OpenSSL
+
+Connect to server
+
+Use SSL_connect, SSL_read, SSL_write
+
+🧪 Phase 5 — Build and Run
+
+Goal: Use CMake to compile and run both apps.
+Tasks:
+
+Create CMakeLists.txt:
+
+cmake_minimum_required(VERSION 3.10)
+project(cpp_tls_demo)
+set(CMAKE_CXX_STANDARD 17)
+find_package(OpenSSL REQUIRED)
+add_executable(server src/tls_server.cpp)
+add_executable(client src/tls_client.cpp)
+target_link_libraries(server OpenSSL::SSL OpenSSL::Crypto)
+target_link_libraries(client OpenSSL::SSL OpenSSL::Crypto)
+
+
+Build:
+
+mkdir build && cd build
+cmake ..
+make
+
+
+Run:
+
+./server
+./client
+
+🚀 Phase 6 — Add Enhancements
+
+Optional Extensions:
+
+Mutual TLS (verify client certificate)
+
+Async server using boost::asio
+
+Multi-threaded connections
+
+Logging using spdlog
+
+Performance testing with valgrind or perf
+
+Turn into mini robot telemetry system (robot sends secure sensor data)
+
+🧠 Deliverables
+
+/src → source files for server & client
+
+/certs → certificate and key
+
+/build → compiled binaries
+
+README.md → project setup + run instructions
+
+Please generate all necessary source files, CMakeLists.txt, and shell scripts to build, run, and test this project locally on Ubuntu. Also explain each phase and include comments in the C++ code for learning purposes.
